@@ -27,7 +27,6 @@ class CarWashStation:
                 result += self.wash_single_car(car.clean_mark,
                                                car.comfort_class)
                 car.clean_mark = self.clean_power
-        # we need return income
         return result
 
     def calculate_washing_price(self, car: Car) -> Any:
@@ -45,7 +44,6 @@ class CarWashStation:
             calculate = (car_class * (self.clean_power - car_mark)
                          * self.average_rating
                          / self.distance_from_city_center)
-        # we need to change clean mark car = clean power station
         return round(calculate, 1)
 
     def rate_service(self, mark: int) -> Any:
