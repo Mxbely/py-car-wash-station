@@ -1,5 +1,3 @@
-from typing import Any
-
 
 class Car:
     def __init__(self, comfort_class: int,
@@ -20,18 +18,16 @@ class CarWashStation:
         self.average_rating = average_rating
         self.count_of_ratings = count_of_ratings
 
-    def serve_cars(self, cars_list: list) -> Any:
+    def serve_cars(self, cars_list: list) -> int:
         result = 0
         for car in cars_list:
-            if car.clean_mark is None:
-                result += 0
-            elif car.clean_mark < self.clean_power:
-                result += self.wash_single_car(car.clean_mark,
-                                               car.comfort_class)
+            if car.clean_mark < self.clean_power:
+                result += self.calculate_washing_price(car)
+                self.wash_single_car(car.clean_mark)
                 car.clean_mark = self.clean_power
         return result
 
-    def calculate_washing_price(self, car: Car) -> Any:
+    def calculate_washing_price(self, car: Car) -> float:
         calculate = 0
         if car.clean_mark < self.clean_power:
             calculate = (car.comfort_class
@@ -40,17 +36,12 @@ class CarWashStation:
                          / self.distance_from_city_center)
         return round(calculate, 1)
 
-    def wash_single_car(self, car_mark: int, car_class: int) -> Any:
-        calculate = 0
-        if car_mark < self.clean_power:
-            calculate = (car_class * (self.clean_power - car_mark)
-                         * self.average_rating
-                         / self.distance_from_city_center)
-        return round(calculate, 1)
+    def wash_single_car(self, clean_mark: int) -> None:
+        if clean_mark < self.clean_power:
+            clean_mark = self.clean_power
 
-    def rate_service(self, mark: int) -> Any:
+    def rate_service(self, mark: int) -> None:
         self.count_of_ratings += 1
         result = (((self.average_rating * (self.count_of_ratings - 1)) + mark)
                   / self.count_of_ratings)
         self.average_rating = round(result, 1)
-        return self.average_rating
